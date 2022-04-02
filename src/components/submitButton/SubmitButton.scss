@@ -1,0 +1,15 @@
+$redColor: #d61f26;
+
+.submit-button {
+  button {
+    height: 50px;
+    width: 100%;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background: $redColor;
+    color: white;
+  }
+}
