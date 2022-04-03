@@ -1,11 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../input/Input";
 import "./Navbar.scss";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import NavbarDropDown from "./NavbarDropDown";
+import decode from "jwt-decode";
+import API from "../../config/api";
 
-const Navbar = props => {
+const Navbar = (props) => {
+  const [isLogin, setIsLogin] = useState(false);
+  const [dataUser, setDataUser] = useState("");
+
+  const token = localStorage.getItem("token");
+  useEffect(async () => {
+    if (token) {
+      setIsLogin(true);
+      const dataToken = decode(token);
+      const result = await API.getOneUser(dataToken.id);
+      if (result) {
+        setDataUser(result.data);
+      }
+    } else {
+      setIsLogin(false);
+    }
+  }, []);
   return (
     <div className="navbar">
       <div className="navbar-menu">
@@ -44,15 +62,21 @@ const Navbar = props => {
           type="text"
           placeholder="Search"
         />
-        <ul>
-          <Link className="loginSignupNav" to="/signup">
-            <li>Sign Up</li>
-          </Link>
-          <Link className="loginSignupNav" to="/login">
-            <li>Login</li>
-          </Link>
-        </ul>
-        {/* <NavbarDropDown className={props.className} /> */}
+        {isLogin ? (
+          <NavbarDropDown
+            className={props.className}
+            fullname={dataUser.fullName}
+          />
+        ) : (
+          <ul>
+            <Link className="loginSignupNav" to="/signup">
+              <li>Sign Up</li>
+            </Link>
+            <Link className="loginSignupNav" to="/login">
+              <li>Login</li>
+            </Link>
+          </ul>
+        )}
       </div>
     </div>
   );

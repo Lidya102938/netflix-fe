@@ -2,17 +2,22 @@ import React, { useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { IoMdLogOut } from "react-icons/io";
 import { GoTriangleDown } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./NavbarDropDown.scss";
 import classNames from "classnames";
 
-const NavbarDropDown = props => {
+const NavbarDropDown = (props) => {
+  const Navigate = useNavigate();
   const [dropDownMenu, setDropDownMenu] = useState(false);
   const dropDownHoverHandler = () => {
     setDropDownMenu(true);
   };
   const dropDownLeaveHover = () => {
     setDropDownMenu(false);
+  };
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    Navigate("/");
   };
   return (
     <div
@@ -24,7 +29,7 @@ const NavbarDropDown = props => {
         src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
         alt="err"
       />
-      <p>Nashir Resta</p>
+      <p>{props.fullname}</p>
       <GoTriangleDown />
       {dropDownMenu && (
         <div className="dropDownNav">
@@ -40,7 +45,7 @@ const NavbarDropDown = props => {
               Profil
             </h6>
           </Link>
-          <h6>
+          <h6 onClick={logoutHandler}>
             <span>
               <IoMdLogOut />
             </span>

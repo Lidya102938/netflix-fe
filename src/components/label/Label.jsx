@@ -1,10 +1,10 @@
 import React from "react";
 import "./Label.scss";
 
-const Label = props => {
+const Label = (props) => {
   return (
     <div className="label">
-      <p>{props.children}</p>
+      <label htmlFor={props.id}>{props.children}</label>
     </div>
   );
 };

@@ -3,9 +3,9 @@ import "./CheckButton.scss";
 
 const CheckButton = () => {
   return (
-    <label class="container">
+    <label className="container">
       <input type="checkbox" />
-      <span class="checkmark"></span>
+      <span className="checkmark"></span>
     </label>
   );
 };
