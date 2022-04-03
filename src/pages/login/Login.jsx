@@ -30,21 +30,19 @@ const Login = () => {
           <h2>Welcome back</h2>
           <SecondTitle>Login to your account</SecondTitle>
           <div className="login-input">
-            <Label id="email">Email</Label>
+            <Label>Email</Label>
             <Input
               inputClassName={"inputLogin"}
               type="text"
-              id="email"
               placeholder={"Email"}
               register={register("email", {
                 required: true,
               })}
             />
-            <Label id="password">Password</Label>
+            <Label>Password</Label>
             <Input
               inputClassName={"inputLogin"}
               type="password"
-              id="password"
               placeholder={"Password"}
               register={register("password", {
                 required: true,

@@ -4,7 +4,7 @@ import "./Label.scss";
 const Label = (props) => {
   return (
     <div className="label">
-      <label htmlFor={props.id}>{props.children}</label>
+      <p>{props.children}</p>
     </div>
   );
 };

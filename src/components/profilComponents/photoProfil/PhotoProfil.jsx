@@ -11,7 +11,7 @@ const PhotoProfil = () => {
         alt="err"
       />
       <div className="file-upload">
-        <label for="fusk">
+        <label htmlFor="fusk">
           <AiOutlineCloudUpload className="file-icon" /> Upload Foto
         </label>
 

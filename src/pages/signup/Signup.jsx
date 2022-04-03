@@ -32,42 +32,38 @@ const Signup = () => {
           <FirstTitle>Neetflix Review</FirstTitle>
           <SecondTitle>Sign up</SecondTitle>
           <div className="signup-input">
-            <Label id="fullname">Full name</Label>
+            <Label>Full name</Label>
             <Input
               inputClassName={"signupLogin"}
               type="text"
-              id="fullname"
               placeholder={"Full name"}
               register={register("fullname", {
                 required: true,
               })}
             />
-            <Label id="email">Email</Label>
+            <Label>Email</Label>
             <Input
               inputClassName={"signupLogin"}
               type="text"
-              id="email"
               placeholder={"Email"}
               register={register("email", {
                 required: true,
               })}
             />
 
-            <Label id="password">Password</Label>
+            <Label>Password</Label>
             <Input
               inputClassName={"signupLogin"}
               type="password"
-              id="password"
               placeholder={"Password"}
               register={register("password", {
                 required: true,
               })}
             />
-            <Label id="conPassword">Confirm Password</Label>
+            <Label>Confirm Password</Label>
             <Input
               inputClassName={"signupLogin"}
               type="password"
-              id="conPassword"
               placeholder={"Confirm Password"}
               register={register("conPassword", {
                 required: true,

@@ -3,12 +3,11 @@ import "./Input.scss";
 import { AiOutlineSearch } from "react-icons/ai";
 
 const Input = (props) => {
-  const { inputClassName, type, placeholder, register, id, value } = props;
+  const { inputClassName, type, placeholder, register, value } = props;
   return (
     <div className={inputClassName}>
       <input
         {...register}
-        id={id || null}
         type={type}
         value={value}
         placeholder={placeholder}
