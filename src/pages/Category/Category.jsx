@@ -46,7 +46,9 @@ const Category = () => {
           <div className="all-category-film">
             {dataMovies.map((item) => {
               return (
-                <Link to={`/detail?judul=${item.original_title}&id=${item.id}`}>
+                <Link
+                  to={`/detail?judul=${item.original_title}&id=${item.data.id}`}
+                >
                   <img
                     key={item.id}
                     src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
