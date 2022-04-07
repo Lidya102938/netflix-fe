@@ -17,7 +17,7 @@ const NavbarDropDown = (props) => {
   };
   const logoutHandler = () => {
     localStorage.removeItem("token");
-    Navigate("/");
+    Navigate("/login");
   };
   return (
     <div
@@ -25,10 +25,14 @@ const NavbarDropDown = (props) => {
       onMouseOver={dropDownHoverHandler}
       onMouseLeave={dropDownLeaveHover}
     >
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-        alt="err"
-      />
+      {props.image ? (
+        <img src={props.image} alt="err" />
+      ) : (
+        <img
+          src={"https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+          alt="err"
+        />
+      )}
       <p>{props.fullname}</p>
       <GoTriangleDown />
       {dropDownMenu && (

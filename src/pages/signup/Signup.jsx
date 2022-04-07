@@ -37,7 +37,7 @@ const Signup = () => {
               inputClassName={"signupLogin"}
               type="text"
               placeholder={"Full name"}
-              register={register("fullname", {
+              register={register("fullName", {
                 required: true,
               })}
             />

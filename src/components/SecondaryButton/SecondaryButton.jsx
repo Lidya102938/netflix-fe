@@ -3,7 +3,9 @@ import "./SecondaryButton.scss";
 
 const SecondaryButton = (props) => {
   return (
-    <button className={props.className}>{props.children || "Button"}</button>
+    <button onClick={props.onClick} className={props.className}>
+      {props.children || "Button"}
+    </button>
   );
 };
 

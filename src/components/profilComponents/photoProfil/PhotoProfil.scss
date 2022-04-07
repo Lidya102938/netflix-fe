@@ -17,18 +17,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #a7a6a6;
+    border: 2px solid #a7a6a6;
     border-radius: 8px;
+
     .file-icon {
       font-size: 24px;
     }
+    &:hover {
+      background-color: #eb5757;
+      color: white;
+      border: 2px solid #eb5757;
+    }
     label {
-      cursor: pointer;
       font-weight: 600;
       font-size: 16px;
       display: flex;
       align-items: center;
+      cursor: pointer;
       gap: 10px;
+      height: 100%;
+      width: 100%;
     }
   }
 }

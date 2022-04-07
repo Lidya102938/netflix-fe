@@ -1,12 +1,10 @@
 .edit-profil {
-  gap: 40px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   .input-edit {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     gap: 20px;
   }
   .profil-input {
@@ -26,5 +24,8 @@
   .save-profil {
     width: 135px;
     margin-bottom: 50px;
+    position: absolute;
+    right: 50px;
+    bottom: -30px;
   }
 }

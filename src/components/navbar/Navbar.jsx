@@ -66,6 +66,7 @@ const Navbar = (props) => {
           <NavbarDropDown
             className={props.className}
             fullname={dataUser.fullName}
+            image={`http://localhost:3001/image${dataUser.image}`}
           />
         ) : (
           <ul>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.scss";
 import Navbar from "../../components/navbar/Navbar";
 import AiringMovie from "../../components/AiringMovie/AiringMovie";
 import ListFilm from "../../components/ListFilm/ListFilm";
 import Footer from "../../components/footer/Footer";
 import Slider from "react-slick";
+import api from "../../config/api";
 
 const Home = () => {
   const settings = {
@@ -58,12 +59,12 @@ const Home = () => {
             <AiringMovie />
           </div>
         </div>
-        <div>
-          <ListFilm />
-          <ListFilm />
-          <ListFilm />
-          <ListFilm />
-          <ListFilm />
+        <div className="listFilm">
+          <ListFilm genre="Action" genreId={28} />
+          <ListFilm genre="Adventure" genreId={12} />
+          <ListFilm genre="Comedy" genreId={35} />
+          <ListFilm genre="Drama" genreId={18} />
+          <ListFilm genre="Horor" genreId={27} />
         </div>
       </div>
       <Footer />

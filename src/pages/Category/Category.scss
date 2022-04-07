@@ -53,9 +53,9 @@ $Bold: 700;
 
     & .all-category-film {
       display: flex;
-      justify-content: space-evenly;
       flex-wrap: wrap;
-
+      justify-content: center;
+      gap: 20px;
       & img {
         border-radius: 12px;
         transition: 0.4s;
