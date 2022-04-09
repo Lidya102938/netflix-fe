@@ -9,6 +9,7 @@ $redColor: #eb5757;
   img {
     width: 40px;
     height: 40px;
+    border-radius: 50%;
   }
   p {
     font-weight: 600;
@@ -37,7 +38,7 @@ $redColor: #eb5757;
       border-radius: 5px;
     }
 
-    &::before {
+    &::after {
       content: "";
       position: absolute;
       width: 20px;
@@ -47,9 +48,10 @@ $redColor: #eb5757;
       transform: rotate(45deg);
       box-shadow: 0px 0px 10px rgba(47, 47, 47, 0.1);
       background: white;
+      animation: hide 0.8s;
       z-index: -1;
     }
-    &::after {
+    &::before {
       content: "";
       position: absolute;
       width: 200px;
@@ -94,5 +96,13 @@ $redColor: #eb5757;
   100% {
     opacity: 1;
     transform: scaleY(100%);
+  }
+}
+@keyframes hide {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

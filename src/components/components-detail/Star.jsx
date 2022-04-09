@@ -29,6 +29,7 @@ const Star = () => {
         id="star"
         checked={checked}
         onClick={checkedHandler}
+        readOnly={true}
       />
     </div>
   );

@@ -6,6 +6,7 @@ import { AiOutlineRight } from "react-icons/ai";
 import Pagination from "../../components/pagination/Pagination";
 import { Link, useParams } from "react-router-dom";
 import api from "../../config/api";
+import Card from "../../components/Molekul/card/Card";
 
 const Category = () => {
   const { category } = useParams();
@@ -46,16 +47,8 @@ const Category = () => {
           <div className="all-category-film">
             {dataMovies.map((item) => {
               return (
-                <Link
-                  to={`/detail?judul=${item.original_title}&id=${item.data.id}`}
-                >
-                  <img
-                    key={item.id}
-                    src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                    alt=""
-                    width={"140px"}
-                    height={"220px"}
-                  />
+                <Link to={`/detail?id=${item.id}&title=${item.original_title}`}>
+                  <Card key={item.id} data={item} />
                 </Link>
               );
             })}

@@ -70,8 +70,11 @@ const Signup = () => {
               })}
             />
             <SubmitButton>Sign Me Up</SubmitButton>
-            <Link style={{ textDecoration: "none" }} to="/login">
-              <p>Already have an account?</p>
+            <Link
+              style={{ textDecoration: "none", textAlign: "center" }}
+              to="/login"
+            >
+              <p>Login?</p>
             </Link>
           </div>
         </form>

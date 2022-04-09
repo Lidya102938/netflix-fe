@@ -134,6 +134,19 @@ export default {
         });
     });
   },
+  getTop: () => {
+    return new Promise((resolve, reject) => {
+      url
+        .get(`get_top`)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    });
+  },
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
       url
@@ -151,6 +164,32 @@ export default {
     return new Promise((resolve, reject) => {
       url
         .get(`get_casting/${id}`)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    });
+  },
+  getTrailer: (id) => {
+    return new Promise((resolve, reject) => {
+      url
+        .get(`get_trailer/${id}`)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    });
+  },
+  getSearch: (query) => {
+    return new Promise((resolve, reject) => {
+      url
+        .get(`get_search/${query}`)
         .then((response) => {
           resolve(response.data);
         })

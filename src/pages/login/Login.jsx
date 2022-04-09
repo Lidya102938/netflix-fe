@@ -48,18 +48,28 @@ const Login = () => {
                 required: true,
               })}
             />
-            <div className="login-option">
-              <div className="remember-me">
+            {/* <div className="login-option"> */}
+            {/* <div className="remember-me">
                 <CheckButton />
                 <p>remember me</p>
-              </div>
-              <p>forgot password</p>
-            </div>
+              </div> */}
+            {/* <Link style={{ textDecoration: "none" }} to="/signup">
+                <p>Register?</p>
+              </Link> */}
+            {/* </div> */}
             <SubmitButton>Login Now</SubmitButton>
           </div>
-          <Link style={{ textDecoration: "none" }} to="/signup">
-            <p>Not registered yet?</p>
-          </Link>
+          <div className="login-option">
+            <div className="remember-me">
+              {/* <CheckButton /> */}
+              <Link style={{ textDecoration: "none" }} to="/forgot_password">
+                <p>forgot password?</p>
+              </Link>
+            </div>
+            <Link style={{ textDecoration: "none" }} to="/signup">
+              <p>signup?</p>
+            </Link>
+          </div>
         </form>
       </div>
     </div>

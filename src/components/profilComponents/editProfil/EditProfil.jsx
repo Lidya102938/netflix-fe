@@ -14,6 +14,7 @@ const EditProfil = ({ saveAvatar }) => {
   const [fullNameEdit, setFullNameEdit] = useState("");
   const [emailEdit, setEmailEdit] = useState("");
   const [passwordEdit, setPasswordEdit] = useState("");
+  const [conpasswordEdit, setConPasswordEdit] = useState("");
   const [dataUser, setDataUser] = useState("");
 
   const token = localStorage.getItem("token");
@@ -62,7 +63,7 @@ const EditProfil = ({ saveAvatar }) => {
             type="text"
             placeholder={"Email"}
             register={register("email", {
-              required: true,
+              // required: true,
               onChange: (e) => setEmailEdit(e.target.value),
             })}
           />

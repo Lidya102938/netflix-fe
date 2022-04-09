@@ -81,9 +81,16 @@ $Bold: 700;
       & .airing-box {
         display: flex;
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
+        overflow: hidden;
+        padding: 8px;
+        cursor: pointer;
         & .airing-images {
           margin-right: 10px;
+          border-radius: 10px;
+        }
+        &:hover {
+          background-color: rgba(128, 128, 128, 0.161);
           border-radius: 10px;
         }
 

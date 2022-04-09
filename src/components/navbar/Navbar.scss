@@ -49,6 +49,7 @@ $activeInput: #1a73e8;
     align-items: center;
     justify-content: space-between;
     width: 39%;
+    position: relative;
     .inputNavbar {
       position: relative;
       .input {
@@ -68,6 +69,41 @@ $activeInput: #1a73e8;
         transform: translateY(-50%);
         right: 20px;
       }
+    }
+    .result,
+    .scroll {
+      max-height: 400px;
+    }
+    .scroll {
+      overflow-y: scroll;
+    }
+    .text-search {
+      text-decoration: none;
+      color: black;
+      display: flex;
+      margin-bottom: 5px;
+      align-items: center;
+      padding: 5px;
+      border-radius: 5px;
+      &:hover {
+        background-color: rgba(128, 128, 128, 0.294);
+      }
+      img {
+        width: 30px;
+        border-radius: 5px;
+        margin-right: 10px;
+      }
+    }
+    p {
+    }
+    .search-result {
+      position: absolute;
+      left: 0;
+      top: 100px;
+      background-color: white;
+      box-shadow: 3px 3px 5px rgba(128, 128, 128, 0.5);
+      width: 100%;
+      padding: 10px;
     }
     ul {
       display: flex;

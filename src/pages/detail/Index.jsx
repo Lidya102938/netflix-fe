@@ -29,6 +29,9 @@ const Detail = () => {
   const [title, setTitle] = useState("");
   const [dataUser, setDataUser] = useState("");
   const [dataCasting, setDataCasting] = useState([]);
+  const [dataTrailer, setdataTrailer] = useState([]);
+  const [linkYt, setLinkYt] = useState("");
+  const [tahun, setTahun] = useState("");
 
   useEffect(() => {
     const params = new URLSearchParams(document.location.search);
@@ -36,6 +39,7 @@ const Detail = () => {
     getMovies(reqParams);
     setIdMovies(reqParams);
     getCasting(reqParams);
+    getTrailer(reqParams);
     getUser();
 
     const endPoint = ref(db, `comment/${reqParams}`);
@@ -51,11 +55,11 @@ const Detail = () => {
     });
   }, []);
   const getMovies = async (params) => {
-    console.log(params);
     const result = await api.getDetail(params);
     if (result) {
       setDataMovies(result.data);
       setGenres(result.data.genres);
+      setTahun(result.data.release_date.slice(0, 4));
     }
   };
 
@@ -69,6 +73,13 @@ const Detail = () => {
     const result = await api.getCasting(id);
     if (result) {
       setDataCasting(result.data.cast);
+    }
+  };
+  const getTrailer = async (id) => {
+    const result = await api.getTrailer(id);
+    if (result) {
+      setdataTrailer(result.data.results);
+      setLinkYt(result.data.results[0].key);
     }
   };
 
@@ -106,7 +117,7 @@ const Detail = () => {
           </div>
           <div className="detail-judul">
             <h1>{dataMovies.original_title}</h1>
-            <p>2019 | 3 hours 2 minutes</p>
+            <p>{tahun} | 3 hours 2 minutes</p>
             <p>Starting : Roberst Downey Jr, Christ Evan, Mark Ruffalo</p>
             <p>
               Genre :
@@ -115,10 +126,17 @@ const Detail = () => {
               })}
             </p>
             <div className="action">
-              <p>
-                <MdSlowMotionVideo className="icon" />
-                WATCH TRAILER
-              </p>
+              <a
+                href={`https://www.youtube.com/watch?v=${linkYt}`}
+                target={"_blank"}
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <p>
+                  <MdSlowMotionVideo className="icon" />
+                  WATCH TRAILER
+                </p>
+              </a>
+
               <p onClick={myListHandler}>
                 <BsBookmark className="icon" />
                 SAVE TO MY LIST
@@ -149,9 +167,9 @@ const Detail = () => {
           <div className="videos-trailer">
             <h1>Videos & Trailer</h1>
             <div className="videos">
-              <Video img={video1} />
-              <Video img={video2} />
-              <Video img={video3} />
+              {dataTrailer.slice(0, 3).map((item) => {
+                return <Video key={item.id} data={item} />;
+              })}
             </div>
           </div>
           {/* end trailer */}

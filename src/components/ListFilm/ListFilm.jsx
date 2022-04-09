@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import Star from "../Star/Star";
 import api from "../../config/api";
+import Card from "../Molekul/card/Card";
 
 const ListFilm = (props) => {
   const { genre, genreId } = props;
@@ -54,23 +55,10 @@ const ListFilm = (props) => {
             {dataMovies.map((item, index) => {
               return (
                 <div className="item" key={index}>
-                  <Link to={`/detail?judul=${item.original_title}&id=${item.id}`}>
-                    <div className={"info-item"}>
-                      <div className="item-title">
-                        <p>
-                          {item.original_title ||
-                            "Spiderman No Way Home (2022)"}
-                        </p>
-                        <Star vote={item.vote_average} />
-                      </div>
-                    </div>
-                    <img
-                      className="img"
-                      src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                      alt=""
-                      width={"250px"}
-                      height={"330px"}
-                    />
+                  <Link
+                    to={`/detail?id=${item.id}&title=${item.original_title}`}
+                  >
+                    <Card key={item.id} data={item} />
                   </Link>
                 </div>
               );

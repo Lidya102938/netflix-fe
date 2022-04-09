@@ -1,22 +1,20 @@
 import React from "react";
 import Star from "../Star/Star";
 
-const AiringMovie = () => {
+const AiringMovie = ({ data }) => {
   return (
     <div className="airing-box">
       <img
         className="airing-images"
-        src="https://i.ibb.co/0cKyj3C/film.png"
+        src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
         alt=""
         width={"90px"}
         height={"85px"}
       />
       <div className="airing-text-container">
-        <p className="airing-film-title">Spiderman No Way Home</p>
-        <p className="airing-text">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        </p>
-        <Star />
+        <p className="airing-film-title">{data.original_title}</p>
+        <p className="airing-text">{data.overview.slice(0, 60)}</p>
+        <Star vote={data.vote_average} />
       </div>
     </div>
   );
