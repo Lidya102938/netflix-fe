@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
 import "./detail.scss";
+import React, { useEffect, useState } from "react";
 import { MdSlowMotionVideo } from "react-icons/md";
-import { BsBookmark } from "react-icons/bs";
+import { BsBookmark, BsFillBookmarkFill } from "react-icons/bs";
 import { AiFillStar } from "react-icons/ai";
 import Video from "../../components/components-detail/Video";
 import Casting from "../..//components/components-detail/Casting";
@@ -10,16 +10,12 @@ import TextEditor from "../../components/components-detail/TextEditor";
 import Button from "../../components/components-detail/Button";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
-import video1 from "../image/video1.png";
-import video2 from "../image/video2.png";
-import video3 from "../image/video3.png";
 import Star from "../../components/components-detail/Star";
 import api from "../../config/api";
-import { getDatabase, onValue, push, ref } from "firebase/database";
 import decode_jwt from "jwt-decode";
+import Loading from "../../components/Atom/Loading";
 
 const Detail = () => {
-  const db = getDatabase();
   const token = localStorage.getItem("token");
   const decode = decode_jwt(token);
   const [dataMovies, setDataMovies] = useState("");
@@ -32,27 +28,26 @@ const Detail = () => {
   const [dataTrailer, setdataTrailer] = useState([]);
   const [linkYt, setLinkYt] = useState("");
   const [tahun, setTahun] = useState("");
+  const [isMyList, setIsMyList] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // console.log(dataMovies);
 
   useEffect(() => {
     const params = new URLSearchParams(document.location.search);
-    const reqParams = params.get("id");
-    getMovies(reqParams);
-    setIdMovies(reqParams);
-    getCasting(reqParams);
-    getTrailer(reqParams);
+    const moviesId = params.get("moviesId");
+    const tvId = params.get("tvId");
+    if (moviesId) {
+      getMovies(moviesId);
+    } else {
+      getTv(tvId);
+    }
+    setIdMovies(moviesId);
+    getCasting(moviesId);
+    getTrailer(moviesId);
     getUser();
-
-    const endPoint = ref(db, `comment/${reqParams}`);
-    onValue(endPoint, (snapshot) => {
-      const data = [];
-      Object.keys(snapshot.val()).map((key) => {
-        data.push({
-          id: key,
-          data: snapshot.val()[key],
-        });
-      });
-      setDataComment(data);
-    });
+    getComment(moviesId);
+    getOneMyList(moviesId);
   }, []);
   const getMovies = async (params) => {
     const result = await api.getDetail(params);
@@ -62,6 +57,13 @@ const Detail = () => {
       setTahun(result.data.release_date.slice(0, 4));
     }
   };
+  const getTv = async (params) => {
+    const result = await api.getOneTv(params);
+    if (result) {
+      // setDataMovies(result.data);
+      console.log(result.data);
+    }
+  };
 
   const getUser = async () => {
     const result = await api.getOneUser(decode.id);
@@ -69,10 +71,19 @@ const Detail = () => {
       setDataUser(result.data);
     }
   };
+
   const getCasting = async (id) => {
     const result = await api.getCasting(id);
     if (result) {
-      setDataCasting(result.data.cast);
+      setDataCasting(result.data.cast.slice(0, 12));
+    }
+  };
+  const getComment = async (filmId) => {
+    const result = await api.getAllComment();
+    if (result) {
+      setDataComment(
+        result.data.filter((el) => el.filmId === parseInt(filmId))
+      );
     }
   };
   const getTrailer = async (id) => {
@@ -83,21 +94,45 @@ const Detail = () => {
     }
   };
 
-  const myListHandler = () => {
-    push(ref(db, `myList/${decode.id}`), {
-      isMyList: true,
+  const myListHandler = async () => {
+    const data = {
+      moviesId: dataMovies.id,
       image: dataMovies.backdrop_path,
       title: dataMovies.original_title,
-      genre: dataMovies.genres,
+      // genre: genres.map((el) => {
+      //   return el.name;
+      // }),
+      date: dataMovies.release_date,
       overview: dataMovies.overview,
       rating: dataMovies.vote_average,
-    }).then(() => {
-      console.log("succes");
-    });
+    };
+    setLoading(true);
+    const result = await api.createMyList(data, dataUser.id);
+    if (result.length > 0) {
+      setIsMyList(false);
+    } else {
+      setIsMyList(true);
+      setLoading(false);
+    }
   };
+
+  const getOneMyList = async (id) => {
+    const result = await api.getOneMyList(id);
+    if (result.data.length > 0) {
+      setIsMyList(false);
+    } else {
+      setIsMyList(true);
+    }
+  };
+
+  const Hours = Math.floor(dataMovies.runtime / 60);
+  const minutes = dataMovies.runtime % 60;
+  // console.log();
+
   return (
     <>
       <Navbar />
+      {loading && <Loading />}
       <div className="container-detail">
         <div className="bg-img">
           <img
@@ -117,8 +152,10 @@ const Detail = () => {
           </div>
           <div className="detail-judul">
             <h1>{dataMovies.original_title}</h1>
-            <p>{tahun} | 3 hours 2 minutes</p>
-            <p>Starting : Roberst Downey Jr, Christ Evan, Mark Ruffalo</p>
+            <p>{`${tahun} | ${Hours} hours ${minutes} minutes`}</p>
+            <p>
+              Starting : {dataCasting.slice(0, 3).map((el) => `${el.name}, `)}
+            </p>
             <p>
               Genre :
               {genres.map((el) => {
@@ -136,11 +173,17 @@ const Detail = () => {
                   WATCH TRAILER
                 </p>
               </a>
-
-              <p onClick={myListHandler}>
-                <BsBookmark className="icon" />
-                SAVE TO MY LIST
-              </p>
+              {isMyList === true ? (
+                <p className="aktif">
+                  <BsFillBookmarkFill className="icon" />
+                  SAVE TO MY LIST
+                </p>
+              ) : (
+                <p onClick={myListHandler}>
+                  <BsBookmark className="icon" />
+                  SAVE TO MY LIST
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -191,14 +234,6 @@ const Detail = () => {
               <h3>Rating</h3>
               <div className="stars">
                 <Star />
-                <Star />
-                <Star />
-                <Star />
-                <Star />
-                <Star />
-                <Star />
-                <Star />
-                <Star />
               </div>
             </div>
             <div className="title-write">
@@ -217,6 +252,8 @@ const Detail = () => {
                 idMovies={idMovies}
                 title={title}
                 data={dataUser}
+                setDataComment={setDataComment}
+                userId={dataUser.id}
               />
             </div>
           </div>
@@ -224,9 +261,8 @@ const Detail = () => {
           {/* start comment */}
           <div className="detail-comment">
             {dataComment.map((el) => {
-              return <Comment data={el.data} />;
+              return <Comment key={el.id} data={el} img={dataUser.image} />;
             })}
-
             <Button label={"Load More"} classButton={"primary"} />
           </div>
           {/* end comment */}

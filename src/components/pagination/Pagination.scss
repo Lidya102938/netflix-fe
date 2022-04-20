@@ -12,7 +12,13 @@
     height: 40px;
     padding: 10px;
     border-radius: 50%;
-    color: red;
+    color: #eb5757;
+    &:hover {
+      background-color: #eb5757;
+      color: white;
+      cursor: pointer;
+      border: 0px solid;
+    }
   }
   p {
     display: flex;
@@ -21,7 +27,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: red;
+    background: #eb5757;
     color: white;
   }
 }

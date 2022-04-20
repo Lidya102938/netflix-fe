@@ -3,14 +3,13 @@ import "./card.scss";
 import React from "react";
 import Star from "../../Star/Star";
 
-const Card = ({ data }) => {
+const Card = ({ data, tahun }) => {
   return (
     <div className="container-card">
       <div className={"info-item"}>
         <div className="item-title">
           <p>
-            {data.original_title || "Spiderman No Way Home (2022)"} (
-            {data.release_date.slice(0, 4)})
+            {data.original_title || data.original_name} ({tahun})
           </p>
           <Star vote={data.vote_average} />
         </div>

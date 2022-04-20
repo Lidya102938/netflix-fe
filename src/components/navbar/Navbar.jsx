@@ -17,8 +17,8 @@ const Navbar = (props) => {
   const [noDataResult, setNoDataResult] = useState(false);
   const [classSearch, setClassSearch] = useState("");
   const [dataSearch, setDataSearch] = useState([]);
-
   const token = localStorage.getItem("token");
+
   useEffect(async () => {
     if (token) {
       setIsLogin(true);

@@ -5,6 +5,7 @@ import Input from "../../input/Input";
 import decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "../../submitButton/SubmitButton";
+import Loading from "../../Atom/Loading";
 import API from "../../../config/api";
 import { useForm } from "react-hook-form";
 
@@ -17,6 +18,8 @@ const EditProfil = ({ saveAvatar }) => {
   const [conpasswordEdit, setConPasswordEdit] = useState("");
   const [dataUser, setDataUser] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const token = localStorage.getItem("token");
   useEffect(async () => {
     if (token) {
@@ -25,7 +28,6 @@ const EditProfil = ({ saveAvatar }) => {
       if (result) {
         setFullNameEdit(result.data.fullName);
         setEmailEdit(result.data.email);
-        setPasswordEdit(result.data.password);
         setDataUser(result.data);
       }
     }
@@ -33,16 +35,19 @@ const EditProfil = ({ saveAvatar }) => {
 
   const onSubmit = async () => {
     saveAvatar();
+    setLoading(true);
     const result = await API.updateUser(
       { fullName: fullNameEdit, email: emailEdit, password: passwordEdit },
       dataUser.id
     );
     if (result) {
       navigate("/");
+      setLoading(false);
     }
   };
   return (
     <div className="edit-profil">
+      {loading && <Loading />}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="input-edit">
           <Label>Fullname</Label>
@@ -74,7 +79,7 @@ const EditProfil = ({ saveAvatar }) => {
             type="password"
             placeholder={"Password"}
             register={register("password", {
-              required: true,
+              // required: true,
               onChange: (e) => setPasswordEdit(e.target.value),
             })}
           />
@@ -84,6 +89,10 @@ const EditProfil = ({ saveAvatar }) => {
             inputClassName={"profil-input"}
             type="password"
             placeholder={"Confirm password"}
+            register={register("conPassword", {
+              // required: true,
+              onChange: (e) => setConPasswordEdit(e.target.value),
+            })}
           />
         </div>
         <div className="save-profil">

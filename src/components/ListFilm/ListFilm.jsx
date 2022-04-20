@@ -7,7 +7,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
-import Star from "../Star/Star";
 import api from "../../config/api";
 import Card from "../Molekul/card/Card";
 
@@ -27,7 +26,7 @@ const ListFilm = (props) => {
     getMovies();
   }, []);
   const getMovies = async () => {
-    const result = await api.getPopular();
+    const result = await api.getMovies(genreId, 1);
     setDataMovies(
       result.data
         .filter((el) => el.genre_ids.includes(parseInt(genreId)))
@@ -56,9 +55,13 @@ const ListFilm = (props) => {
               return (
                 <div className="item" key={index}>
                   <Link
-                    to={`/detail?id=${item.id}&title=${item.original_title}`}
+                    to={`/detail?moviesId=${item.id}&title=${item.original_title}`}
                   >
-                    <Card key={item.id} data={item} />
+                    <Card
+                      key={item.id}
+                      data={item}
+                      tahun={item.release_date.slice(0, 4)}
+                    />
                   </Link>
                 </div>
               );

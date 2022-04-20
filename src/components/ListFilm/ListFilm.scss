@@ -30,7 +30,10 @@ $Bold: 700;
   & .list-film-carousel {
     & .inner-carousel {
       padding: 10px;
-
+      .skeleton {
+        display: flex;
+        justify-content: space-between;
+      }
       & .slick-slider {
         width: 104%;
         position: relative;

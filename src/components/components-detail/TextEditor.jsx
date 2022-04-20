@@ -4,10 +4,9 @@ import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import Button from "./Button";
-import { getDatabase, push, ref } from "firebase/database";
+import api from "../../config/api";
 
-const TextEditor = ({ idMovies, title, data }) => {
-  const db = getDatabase();
+const TextEditor = ({ idMovies, title, data, setDataComment, userId }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [text, setText] = useState("");
 
@@ -16,20 +15,14 @@ const TextEditor = ({ idMovies, title, data }) => {
     setText(draftToHtml(convertToRaw(e.getCurrentContent())));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    push(ref(db, `comment/${idMovies}`), {
-      image: data.image,
-      fullName: data.fullName,
-      title: title,
-      textComment: text,
-    })
-      .then(() => {
-        console.log("succes");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const result = await api.createComment(data, idMovies, title, text);
+    if (result) {
+      setDataComment(
+        result.data.filter((el) => el.filmId === parseInt(idMovies))
+      );
+    }
   };
 
   return (

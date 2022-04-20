@@ -2,18 +2,12 @@ import React from "react";
 import "./MyListFilm.scss";
 import DeleteList from "../deleteList/DeleteList";
 import Rating from "../Rating/Rating";
-import { getDatabase, ref, update, remove } from "firebase/database";
+import api from "../../config/api";
 
-const MyListFilm = ({ data, id, id_user }) => {
-  const db = getDatabase();
-
-  const disabledDelete = () => {
-    update(ref(db, `myList/${id_user}/${id}`), {
-      isMyList: false,
-    }).then(() => {
-      console.log("succes");
-      remove(ref(db, `myList/${id_user}/${id}`));
-    });
+const MyListFilm = ({ data, myListId, setDataMyList, page }) => {
+  const disabledDelete = async () => {
+    const result = await api.deleteMyList(page, myListId);
+    setDataMyList(result.data);
   };
   return (
     <div className="mylist-list">
@@ -28,10 +22,9 @@ const MyListFilm = ({ data, id, id_user }) => {
             <li>|</li>
             <li>3 hours 2 minutes </li>
             <li>
-              Genre :{" "}
-              {data.genre.map((el) => {
+              {/* Genre :{data.genre.map((el) => {
                 return `${el.name}, `;
-              })}
+              }) } */}
             </li>
             <li>Staring : Roberst Downey Jr, Chris Evan, Mark Rufallo</li>
           </ul>

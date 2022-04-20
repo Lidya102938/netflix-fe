@@ -1,13 +1,19 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 
-const Comment = ({ data }) => {
+const Comment = ({ data, img }) => {
   const [readMore, setReadMore] = useState("text-comment");
   const [isReadMore, setIsReadMore] = useState(true);
+  const [date, setDate] = useState("");
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
   };
+
+  useEffect(() => {
+    setDate(moment(data.createdAt).fromNow());
+  }, [data]);
 
   return (
     <div className="container-comment">
@@ -18,15 +24,15 @@ const Comment = ({ data }) => {
           className="img"
         />
         <div className="name">
-          <h3>{data.fullName}</h3>
+          <h3>{data.nama}</h3>
           <p>
-            3 Days Ago <AiFillStar className="icon" /> 8.4 / 10
+            {date} <AiFillStar className="icon" /> 8.4 / 10
           </p>
         </div>
       </div>
       <div className={readMore}>
         <h2>{data.title}</h2>
-        <div dangerouslySetInnerHTML={{ __html: data.textComment }}></div>
+        <div dangerouslySetInnerHTML={{ __html: data.text_comment }}></div>
       </div>
     </div>
   );

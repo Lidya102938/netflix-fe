@@ -13,7 +13,7 @@ const AiringMovie = ({ data }) => {
       />
       <div className="airing-text-container">
         <p className="airing-film-title">{data.original_title}</p>
-        <p className="airing-text">{data.overview.slice(0, 60)}</p>
+        <p className="airing-text">{data.overview.slice(0, 40)}...</p>
         <Star vote={data.vote_average} />
       </div>
     </div>

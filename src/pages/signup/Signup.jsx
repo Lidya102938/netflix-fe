@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Signup.scss";
 import FirstTitle from "../../components/loginSignUpComponents/firstTitle/FirstTitle";
 import SecondTitle from "../../components/loginSignUpComponents/secondTitle/SecondTitle";
 import Label from "../../components/label/Label";
 import SubmitButton from "../../components/submitButton/SubmitButton";
+import Loading from "../../components/Atom/Loading";
 import Input from "../../components/input/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import API from "../../config/api";
+import Notify from "../../components/Atom/Notify";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     handleSubmit,
     register,
@@ -18,14 +22,21 @@ const Signup = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const result = await API.signUp(data);
-    if (result) {
-      console.log(result);
-      navigate("/login");
+    if (data.password === data.conPassword) {
+      setIsLoading(true);
+      const result = await API.signUp(data);
+      if (result) {
+        console.log(result);
+        navigate("/");
+        setIsLoading(false);
+      }
+    } else {
+      Notify.error("Password Tidak Sama");
     }
   };
   return (
     <div className="signup">
+      {isLoading && <Loading />}
       <div className="side-image"></div>
       <div className="signup-form">
         <form onSubmit={handleSubmit(onSubmit)}>

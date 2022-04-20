@@ -19,7 +19,7 @@ const Category = () => {
   }, [page]);
 
   const getMovies = async () => {
-    const result = await api.getMovies(page);
+    const result = await api.getMovies(genreId, page);
     setDataMovies(
       result.data.filter((el) => el.genre_ids.includes(parseInt(genreId)))
     );
@@ -47,8 +47,11 @@ const Category = () => {
           <div className="all-category-film">
             {dataMovies.map((item) => {
               return (
-                <Link to={`/detail?id=${item.id}&title=${item.original_title}`}>
-                  <Card key={item.id} data={item} />
+                <Link
+                  key={item.id}
+                  to={`/detail?moviesId=${item.id}&title=${item.original_title}`}
+                >
+                  <Card data={item} tahun={item.release_date.slice(0, 4)} />
                 </Link>
               );
             })}

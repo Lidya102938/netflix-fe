@@ -7,8 +7,10 @@ import Footer from "../../components/footer/Footer";
 import Slider from "react-slick";
 import api from "../../config/api";
 import { Link } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-const Home = () => {
+const Home = ({ noData, setNoData }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -20,24 +22,30 @@ const Home = () => {
   };
 
   const [dataTop, setDataTop] = useState([]);
-  const [noData, setNoData] = useState(true);
 
   useEffect(() => {
     getPopular();
-
-    if (dataTop.length > 0) {
-      setNoData(false);
-    } else {
-      setNoData(true);
-    }
   }, []);
 
   const getPopular = async () => {
     const result = await api.getTop();
-    if (result) {
-      setDataTop(result.data.slice(0, 4));
+
+    if (result.length === 0) {
+      setNoData(true);
+    } else {
+      setNoData(false);
+      setDataTop(result.data.slice(4, 8));
     }
   };
+
+  var myHTML = "<div><h1>Jimbo.</h1><p>That's what she said</p></div>";
+
+  var strippedHtml = myHTML.replace(/<[^>]+>/g, "");
+
+  // Jimbo.
+  // That's what she said
+  console.log(strippedHtml);
+
   return (
     <>
       <Navbar activeHome={"active"} />
@@ -45,13 +53,9 @@ const Home = () => {
         <div className="landingPages">
           <div className="scrolling-film-container">
             {noData ? (
-              <div
-                style={{
-                  width: "720px",
-                  height: "460px",
-                  backgroundColor: "grey",
-                }}
-              ></div>
+              <Skeleton
+                style={{ width: "75%", height: "480px", borderRadius: "10px" }}
+              />
             ) : (
               <Slider {...settings}>
                 {dataTop.map((data) => {
@@ -60,8 +64,6 @@ const Home = () => {
                       key={data.id}
                       src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`}
                       alt=""
-                      width={"720px"}
-                      height={"460px"}
                     />
                   );
                 })}
@@ -69,26 +71,66 @@ const Home = () => {
             )}
           </div>
           <div className="airing-container">
-            <p className="airing-title">Top Airing Movie</p>
-            {dataTop.map((item) => {
-              return (
-                <Link
-                  to={`detail?id=${item.id}&${item.original_title}`}
-                  style={{ textDecoration: "none", color: "black" }}
-                >
-                  <AiringMovie key={item.id} data={item} />
-                </Link>
-              );
-            })}
+            {noData ? (
+              <>
+                <Skeleton
+                  style={{
+                    width: "80%",
+                    height: "40px",
+                    borderRadius: "10px",
+                    marginBottom: "10px",
+                  }}
+                />
+              </>
+            ) : (
+              <p className="airing-title">Top Airing Movie</p>
+            )}
+
+            {noData
+              ? [1, 2, 3, 4].map((idx) => {
+                  return (
+                    <div className="container-skeleton-airing" key={idx}>
+                      <Skeleton
+                        style={{
+                          height: "80px",
+                          width: "60px",
+                          borderRadius: "10px",
+                          marginRight: "10px",
+                        }}
+                      />
+                      <div className="right">
+                        <Skeleton
+                          count={3}
+                          style={{
+                            height: "25px",
+                            width: "100%",
+                            borderRadius: "10px",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })
+              : dataTop.map((item) => (
+                  <Link
+                    key={item.id}
+                    to={`detail?moviesId=${item.id}&title=${item.original_title}`}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <AiringMovie data={item} />
+                  </Link>
+                ))}
           </div>
         </div>
-        <div className="listFilm">
-          <ListFilm genre="Action" genreId={28} />
-          <ListFilm genre="Adventure" genreId={12} />
-          <ListFilm genre="Comedy" genreId={35} />
-          <ListFilm genre="Drama" genreId={18} />
-          <ListFilm genre="Horor" genreId={27} />
-        </div>
+        {!noData && (
+          <div className="listFilm">
+            <ListFilm genre="Action" genreId={28} noData={noData} />
+            <ListFilm genre="Adventure" genreId={12} />
+            <ListFilm genre="Comedy" genreId={35} />
+            <ListFilm genre="Drama" genreId={18} />
+            <ListFilm genre="Horor" genreId={27} />
+          </div>
+        )}
       </div>
       <Footer />
     </>

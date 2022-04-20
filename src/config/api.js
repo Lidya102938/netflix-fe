@@ -1,4 +1,5 @@
 import axios from "axios";
+import Notify from "../components/Atom/Notify";
 
 const url = axios.create({
   baseURL: "http://localhost:3001/",
@@ -33,10 +34,12 @@ export default {
         .then((response) => {
           console.log(response.data);
           localStorage.setItem("token", response.data.token);
+          Notify.succes(response.data.message);
           resolve(true);
         })
         .catch((err) => {
-          console.log(err.message);
+          console.log(err.response.data.message);
+          Notify.error(err.response.data.message);
           reject(false);
         });
     });
@@ -94,11 +97,124 @@ export default {
         });
     });
   },
-  // get movies
-  getMovies: (id) => {
+  // get my list
+
+  createMyList: (data, userId, page) => {
     return new Promise((resolve, reject) => {
       url
-        .get(`get_movies/${id}`)
+        .post(`create_mylist`, {
+          moviesId: data.moviesId,
+          image: data.image,
+          userId: userId,
+          title: data.title,
+          // genre: data.genre,
+          overview: data.overview,
+          date: data.date,
+          rating: 3,
+          isMyList: true,
+        })
+        .then(() => {
+          url.get(`/get_one_mylist?moviesId=${data.moviesId}`).then((ress) => {
+            console.log(ress.data);
+            resolve(ress.data);
+          });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    });
+  },
+  deleteMyList: (page, listId) => {
+    return new Promise((resolve, reject) => {
+      url
+        .delete(`delete_mylist/${listId}`)
+        .then(() => {
+          url.get(`/get_all?page=${page}&size=5`).then((ress) => {
+            console.log(ress.data);
+            resolve(ress.data);
+          });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    });
+  },
+  getAllMyList: (page) => {
+    return new Promise((resolve, reject) => {
+      url
+        .get(`/get_all?page=${page || 0}&size=5`)
+        .then((ress) => {
+          console.log(ress.data);
+          resolve(ress.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    });
+  },
+  getOneMyList: (id) => {
+    return new Promise((resolve, reject) => {
+      url
+        .get(`/get_one_mylist?moviesId=${id}`)
+        .then((ress) => {
+          resolve(ress.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    });
+  },
+
+  // get comment
+
+  createComment: (data, idMovies, title, text) => {
+    return new Promise((resolve, reject) => {
+      url
+        .post(`create_comment`, {
+          image: data.image,
+          nama: data.fullName,
+          filmId: idMovies,
+          title: title,
+          text_comment: text,
+          rating: 3,
+        })
+        .then((response) => {
+          url.get(`getAllComment`).then((ress) => {
+            console.log(ress.data);
+            resolve(ress.data);
+          });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    });
+  },
+
+  getAllComment: () => {
+    return new Promise((resolve, reject) => {
+      url
+        .get(`getAllComment`)
+        .then((ress) => {
+          // console.log(ress.data);
+          resolve(ress.data);
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+          reject(false);
+        });
+    });
+  },
+
+  // get movies
+  getMovies: (genreId, page) => {
+    return new Promise((resolve, reject) => {
+      url
+        .get(`get_movies/${genreId}/${page}`)
         .then((response) => {
           resolve(response.data);
         })
@@ -112,19 +228,6 @@ export default {
     return new Promise((resolve, reject) => {
       url
         .get(`get_genre`)
-        .then((response) => {
-          resolve(response.data);
-        })
-        .catch((err) => {
-          console.log(err.message);
-          reject(false);
-        });
-    });
-  },
-  getPopular: () => {
-    return new Promise((resolve, reject) => {
-      url
-        .get(`get_popular`)
         .then((response) => {
           resolve(response.data);
         })
@@ -151,6 +254,19 @@ export default {
     return new Promise((resolve, reject) => {
       url
         .get(`get_detail/${id}`)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    });
+  },
+  getOneTv: (id) => {
+    return new Promise((resolve, reject) => {
+      url
+        .get(`get_one_tv/${id}`)
         .then((response) => {
           resolve(response.data);
         })
@@ -190,6 +306,19 @@ export default {
     return new Promise((resolve, reject) => {
       url
         .get(`get_search/${query}`)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          reject(false);
+        });
+    });
+  },
+  getTvSeries: (page) => {
+    return new Promise((resolve, reject) => {
+      url
+        .get(`get_tvSeries/${page}`)
         .then((response) => {
           resolve(response.data);
         })
