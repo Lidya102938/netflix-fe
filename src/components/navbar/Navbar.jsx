@@ -61,7 +61,7 @@ const Navbar = (props) => {
     <>
       <div className="navbar">
         <div className="navbar-menu">
-          <h1 className="logo">Neetflx Review</h1>
+          <h1 className="logo">Neetflix Review</h1>
           <ul>
             <Link className={classNames("Link", props.activeHome)} to="/">
               <li>Home</li>
